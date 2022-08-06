@@ -1,0 +1,43 @@
+---
+interface Frontmatter {
+	title: string;
+	description?: string;
+	slug: string;
+}
+
+let posts = await Astro.glob<Frontmatter>('../pages/posts/*.md');
+
+import readingTime from 'reading-time'
+---
+
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+	<title>Astro + TailwindCSS</title>
+</head>
+
+<body>
+	<h1 class="text-3xl font-bold">This is a simple blog created with Astro</h1>
+	<p class="max-w-2xl mt-5">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos quibusdam accusantium
+		veniam qui
+		nobis ea corporis
+		necessitatibus dolorum magnam distinctio. Earum fugit aliquam deserunt laudantium facere sit aut sequi quaerat!
+	</p>
+	<div class="flex gap-8 mt-8">
+		{posts.slice(0, 4).map(post => (
+		<article class="border p-8">
+			<h2 class="font-bold text-2xl">{post.frontmatter.title}</h2>
+			<p>{readingTime(post.rawContent()).text}</p>
+			<a class="text-blue-500" href={`/posts/${post.frontmatter.slug}`}>Read</a>
+		</article>
+		))}
+	</div>
+
+	<a class="bg-blue-600 text-white font-bold px-8 py-4 mt-8 inline-block" href="/posts">Browse all the posts</a>
+	<script>
+	</script>
+</body>
+
+</html>

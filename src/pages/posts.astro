@@ -1,0 +1,33 @@
+---
+interface Frontmatter {
+    title: string;
+    description?: string;
+    slug: string;
+}
+
+let posts = await Astro.glob<Frontmatter>('../pages/posts/*.md');
+
+import readingTime from 'reading-time'
+---
+
+<html>
+
+<head>
+    <title>All Posts</title>
+    <meta charset="UTF-8" />
+</head>
+
+<body>
+    <h1 class="text-3xl font-bold">All Posts Page</h1>
+    <div class="flex gap-8 mt-8 flex-wrap">
+        {posts.map(post => (
+        <article class="border p-8">
+            <h2 class="font-bold text-2xl">{post.frontmatter.title}</h2>
+            <p>{readingTime(post.rawContent()).text}</p>
+            <a class="text-blue-500" href={`/posts/${post.frontmatter.slug}`}>Read</a>
+        </article>
+        ))}
+    </div>
+</body>
+
+</html>
